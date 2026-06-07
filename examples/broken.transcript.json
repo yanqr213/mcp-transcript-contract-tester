@@ -1,0 +1,39 @@
+{
+  "messages": [
+    {
+      "jsonrpc": "2.0",
+      "id": "dup",
+      "method": "tools/call",
+      "params": {
+        "name": "search_docs",
+        "arguments": {
+          "limit": "three"
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": "dup",
+      "method": "tools/call",
+      "params": {
+        "name": "not_in_snapshot",
+        "arguments": {}
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": "orphan",
+      "result": {
+        "content": []
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": "bad-error",
+      "error": {
+        "code": "TOOL_FAILED",
+        "message": ""
+      }
+    }
+  ]
+}

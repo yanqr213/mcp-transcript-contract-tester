@@ -1,0 +1,4 @@
+{"jsonrpc":"2.0","id":"req-1","method":"tools/call","params":{"name":"search_docs","arguments":{"query":"MCP tool result","limit":3}}}
+{"jsonrpc":"2.0","id":"req-1","result":{"content":[{"type":"text","text":"Found 3 local documents."}],"meta":{"latency_ms":42,"cost_usd":0.0}}}
+{"jsonrpc":"2.0","id":"req-2","method":"tools/call","params":{"name":"summarize","arguments":{"text":"A transcript is a recorded sequence of tool messages.","style":"brief"}}}
+{"jsonrpc":"2.0","id":"req-2","result":{"content":[{"type":"text","text":"A transcript records tool interactions."}],"meta":{"duration_ms":18,"cost_usd":0.0}}}

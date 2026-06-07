@@ -1,0 +1,28 @@
+{
+  "tools": [
+    {
+      "name": "search_docs",
+      "description": "Search local documentation.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["query"],
+        "properties": {
+          "query": {"type": "string"},
+          "limit": {"type": "integer"}
+        }
+      }
+    },
+    {
+      "name": "summarize",
+      "description": "Summarize text.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["text"],
+        "properties": {
+          "text": {"type": "string"},
+          "style": {"type": "string", "enum": ["brief", "detailed"]}
+        }
+      }
+    }
+  ]
+}
