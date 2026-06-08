@@ -14,7 +14,7 @@
 - 检查错误响应格式是否一致。
 - 检查 result 中是否包含 latency/cost 元数据。
 - 与之前的 JSON report 做 baseline diff。
-- 输出 Markdown、JSON 或 JUnit，方便本地阅读、机器处理和 CI 展示。
+- 输出 Markdown、JSON、JUnit 或 SARIF，方便本地阅读、机器处理、CI 展示和 GitHub Code Scanning。
 
 ## 不是什么
 
@@ -61,6 +61,15 @@ mcp-transcript-contract-tester examples/broken.transcript.json \
   --output junit.xml
 ```
 
+输出 SARIF 并上传到 GitHub Code Scanning：
+
+```bash
+mcp-transcript-contract-tester examples/broken.transcript.json \
+  --schema examples/tools.schema.json \
+  --format sarif \
+  --output transcript-contract.sarif
+```
+
 与 baseline 比较：
 
 ```bash
@@ -75,7 +84,7 @@ mcp-transcript-contract-tester examples/broken.transcript.json \
 ```text
 usage: mcp-transcript-contract-tester [-h] [--schema SCHEMA_PATH]
                                       [--baseline BASELINE]
-                                      [--format {markdown,json,junit}]
+                                      [--format {markdown,json,junit,sarif}]
                                       [--output OUTPUT]
                                       [--check {info,warning,error}]
                                       [--version]
@@ -90,6 +99,13 @@ usage: mcp-transcript-contract-tester [-h] [--schema SCHEMA_PATH]
 - 不设置 `--check` 时，发现问题也会正常输出报告并返回 0。
 
 解析失败或文件读取失败返回 2。
+
+## 报告输出
+
+- `markdown`: 适合 PR 评论和人工审查。
+- `json`: 适合保存 baseline 或做二次聚合。
+- `junit`: 适合 CI 测试面板。
+- `sarif`: 适合上传到 GitHub Code Scanning，把 `jsonrpc.missing_response`、`schema.required_missing`、`tool.unknown` 等 transcript contract 问题展示成代码扫描结果。
 
 ## Transcript 格式
 
@@ -158,6 +174,31 @@ Baseline 使用之前生成的 JSON report。diff 会报告：
 - 未变化 issue 数量。
 - summary 中 errors、warnings、info、requests、responses、tool_calls 的变化。
 
+## CI / Code Scanning
+
+```yaml
+permissions:
+  contents: read
+  security-events: write
+
+steps:
+  - uses: actions/checkout@v4
+  - uses: actions/setup-python@v5
+    with:
+      python-version: "3.12"
+  - run: python -m pip install git+https://github.com/yanqr213/mcp-transcript-contract-tester.git
+  - run: |
+      mcp-transcript-contract-tester artifacts/latest-transcript.jsonl \
+        --schema contracts/tools.schema.json \
+        --format sarif \
+        --output transcript-contract.sarif \
+        --check error
+  - uses: github/codeql-action/upload-sarif@v3
+    if: always()
+    with:
+      sarif_file: transcript-contract.sarif
+```
+
 ## 测试
 
 ```bash
@@ -181,7 +222,7 @@ Key features:
 - Error response consistency checks.
 - Latency and cost metadata checks.
 - Baseline diff against a previous JSON report.
-- Markdown, JSON, and JUnit output.
+- Markdown, JSON, JUnit, and SARIF output.
 - `--check` mode for CI severity gates.
 
 Example:
@@ -194,6 +235,8 @@ mcp-transcript-contract-tester examples/clean.transcript.jsonl \
 ```
 
 Use it in CI when you want recorded tool interactions to behave like contract tests: stable, offline, reviewable, and independent from live service availability.
+
+SARIF output uses SARIF 2.1.0 and can be uploaded with `github/codeql-action/upload-sarif@v3` to show transcript contract failures in GitHub Code Scanning.
 
 ## License
 

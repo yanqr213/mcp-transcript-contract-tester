@@ -82,6 +82,19 @@ class CliTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertIn("baseline_diff", data)
 
+    def test_cli_writes_sarif_report(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            transcript = Path(tmp) / "transcript.json"
+            out = Path(tmp) / "report.sarif"
+            transcript.write_text(json.dumps([{"id": "1", "method": "tools/call"}]), encoding="utf-8")
+
+            exit_code = main([str(transcript), "--format", "sarif", "--output", str(out)])
+            data = json.loads(out.read_text(encoding="utf-8"))
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(data["version"], "2.1.0")
+        self.assertEqual(data["runs"][0]["tool"]["driver"]["name"], "mcp-transcript-contract-tester")
+
     def test_cli_version_does_not_require_transcript(self):
         with redirect_stdout(StringIO()) as stdout:
             exit_code = main(["--version"])

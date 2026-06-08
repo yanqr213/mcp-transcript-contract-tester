@@ -24,3 +24,5 @@ jobs:
         run: |
           mcp-transcript-contract-tester examples/clean.transcript.jsonl --schema examples/tools.schema.json --check error
           mcp-transcript-contract-tester examples/broken.transcript.json --schema examples/tools.schema.json --format json --output report.json || true
+          mcp-transcript-contract-tester examples/broken.transcript.json --schema examples/tools.schema.json --format sarif --output report.sarif || true
+          python -m json.tool report.sarif > /dev/null

@@ -27,7 +27,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--baseline", help="Previous JSON report to diff against.")
     parser.add_argument(
         "--format",
-        choices=("markdown", "json", "junit"),
+        choices=("markdown", "json", "junit", "sarif"),
         default="markdown",
         help="Report format.",
     )

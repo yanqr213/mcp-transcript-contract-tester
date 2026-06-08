@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mcp-transcript-contract-tester"
-version = "0.1.0"
+version = "0.2.0"
 description = "Offline contract tester for MCP-like and agent tool-calling transcripts."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -34,6 +34,11 @@ dev = []
 [project.scripts]
 mcp-transcript-contract-tester = "mcp_transcript_contract_tester.cli:main"
 mtct = "mcp_transcript_contract_tester.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/yanqr213/mcp-transcript-contract-tester"
+Repository = "https://github.com/yanqr213/mcp-transcript-contract-tester"
+Issues = "https://github.com/yanqr213/mcp-transcript-contract-tester/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
