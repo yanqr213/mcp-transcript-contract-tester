@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 - 2026-06-09
+
+- Added automatic schema loading for `mcp-contract-recorder` snapshots.
+- Added automatic schema loading for OpenAPI 3.1 documents exported from MCP tool contracts.
+- Added UTF-8 BOM tolerant JSON loading for Windows-authored fixtures.
+- Added CLI and unit coverage for recorder snapshot and OpenAPI schema inputs.
+
 ## 0.2.0 - 2026-06-08
 
 - Added SARIF 2.1.0 report output for GitHub Code Scanning.

@@ -1,0 +1,90 @@
+{
+  "components": {
+    "schemas": {
+      "SearchDocsInput": {
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "SummarizeInput": {
+        "properties": {
+          "style": {
+            "enum": [
+              "brief",
+              "detailed"
+            ],
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "Example MCP Tool Contracts",
+    "version": "0.3.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/tools/search-docs": {
+      "post": {
+        "operationId": "call_search_docs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchDocsInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful tool result."
+          }
+        },
+        "summary": "Call search_docs",
+        "x-mcp-tool": {
+          "name": "search_docs"
+        }
+      }
+    },
+    "/tools/summarize": {
+      "post": {
+        "operationId": "call_summarize",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SummarizeInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful tool result."
+          }
+        },
+        "summary": "Call summarize",
+        "x-mcp-tool": {
+          "name": "summarize"
+        }
+      }
+    }
+  }
+}

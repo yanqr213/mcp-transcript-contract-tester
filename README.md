@@ -43,6 +43,21 @@ mcp-transcript-contract-tester examples/clean.transcript.jsonl \
   --check error
 ```
 
+也可以直接使用 `mcp-contract-recorder` 的 snapshot 或它导出的 OpenAPI 3.1 JSON：
+
+```bash
+mcp-transcript-contract-tester artifacts/latest-transcript.jsonl \
+  --schema contracts/contract-snapshot.json \
+  --check error
+
+mcp-transcript-contract-tester artifacts/latest-transcript.jsonl \
+  --schema contracts/contract.openapi.json \
+  --format sarif \
+  --output reports/transcript-contract.sarif
+```
+
+这样可以形成离线闭环：`mcp-contract-recorder` 录制工具契约，`mcp-schema-fuzzer` 生成边界 case，本工具验证真实 transcript 是否仍满足契约。
+
 输出 JSON report：
 
 ```bash
@@ -165,6 +180,26 @@ JSON 根也可以是消息数组，或单个消息对象。工具调用识别尽
 }
 ```
 
+也支持 `mcp-contract-recorder.snapshot/v1`：
+
+```json
+{
+  "format": "mcp-contract-recorder.snapshot/v1",
+  "tools": {
+    "search_docs": {
+      "name": "search_docs",
+      "inputSchema": {
+        "type": "object",
+        "required": ["query"],
+        "properties": {"query": {"type": "string"}}
+      }
+    }
+  }
+}
+```
+
+还支持 OpenAPI 3.1 中的 `POST /tools/{tool}` 操作，尤其是 `mcp-contract-recorder export-openapi` 生成的文档。工具名优先读取 `x-mcp-tool.name`，其次使用 `operationId` 或 path slug；请求参数 schema 来自 `requestBody.content.application/json.schema`，包括 `#/components/schemas/...` 引用。
+
 ## Baseline diff
 
 Baseline 使用之前生成的 JSON report。diff 会报告：
@@ -232,6 +267,22 @@ mcp-transcript-contract-tester examples/clean.transcript.jsonl \
   --schema examples/tools.schema.json \
   --format markdown \
   --check error
+```
+
+Recorder/OpenAPI workflow:
+
+```bash
+mcp-contract-recorder record examples/transcript.mcp.jsonl --out contracts/contract-snapshot.json
+mcp-contract-recorder export-openapi contracts/contract-snapshot.json --out contracts/contract.openapi.json
+
+mcp-transcript-contract-tester artifacts/latest-transcript.jsonl \
+  --schema contracts/contract-snapshot.json \
+  --check error
+
+mcp-transcript-contract-tester artifacts/latest-transcript.jsonl \
+  --schema contracts/contract.openapi.json \
+  --format sarif \
+  --output transcript-contract.sarif
 ```
 
 Use it in CI when you want recorded tool interactions to behave like contract tests: stable, offline, reviewable, and independent from live service availability.

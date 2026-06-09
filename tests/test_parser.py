@@ -26,6 +26,15 @@ class ParserTests(unittest.TestCase):
 
         self.assertEqual(messages, [{"id": "1", "method": "tool"}])
 
+    def test_loads_json_with_utf8_bom(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "transcript.json"
+            path.write_text('\ufeff{"messages":[{"id":"1","method":"tool"}]}', encoding="utf-8")
+
+            messages = load_transcript(str(path))
+
+        self.assertEqual(messages, [{"id": "1", "method": "tool"}])
+
     def test_rejects_non_object_jsonl_entry(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "transcript.jsonl"

@@ -1,0 +1,98 @@
+{
+  "createdAt": "2026-06-09T00:00:00Z",
+  "format": "mcp-contract-recorder.snapshot/v1",
+  "metadata": {
+    "callCount": 1,
+    "recorder": "mcp-contract-recorder",
+    "toolCount": 2
+  },
+  "recorderVersion": "0.3.0",
+  "tools": {
+    "search_docs": {
+      "compatibility": {
+        "inputSchemaHash": "example",
+        "observedErrorCodes": []
+      },
+      "errors": [],
+      "examples": [
+        {
+          "input": {
+            "query": "contract"
+          },
+          "output": {
+            "content": [],
+            "meta": {
+              "cost_usd": 0,
+              "latency_ms": 12
+            }
+          }
+        }
+      ],
+      "inputSchema": {
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "name": "search_docs",
+      "outputSchema": {
+        "type": "object"
+      },
+      "stats": {
+        "callCount": 1
+      }
+    },
+    "summarize": {
+      "compatibility": {
+        "inputSchemaHash": "example",
+        "observedErrorCodes": []
+      },
+      "errors": [],
+      "examples": [
+        {
+          "input": {
+            "style": "brief",
+            "text": "A transcript is a recorded sequence of tool messages."
+          },
+          "output": {
+            "content": [],
+            "meta": {
+              "cost_usd": 0,
+              "duration_ms": 18
+            }
+          }
+        }
+      ],
+      "inputSchema": {
+        "properties": {
+          "style": {
+            "enum": [
+              "brief",
+              "detailed"
+            ],
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "type": "object"
+      },
+      "name": "summarize",
+      "outputSchema": {
+        "type": "object"
+      },
+      "stats": {
+        "callCount": 1
+      }
+    }
+  }
+}

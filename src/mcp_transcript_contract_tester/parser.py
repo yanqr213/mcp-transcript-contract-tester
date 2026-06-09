@@ -12,7 +12,7 @@ class ParseError(ValueError):
 def load_json_file(path: str) -> Any:
     file_path = Path(path)
     try:
-        return json.loads(file_path.read_text(encoding="utf-8"))
+        return json.loads(file_path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError as exc:
         raise ParseError(f"{file_path}: invalid JSON at line {exc.lineno}, column {exc.colno}: {exc.msg}") from exc
 
